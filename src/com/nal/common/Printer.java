@@ -6,6 +6,8 @@ import java.util.Collections;
 
 public class Printer {
 	
+	public int beginRow = 1;
+	public int endRow =1;
 	public static void line(String s, int n) {
 		System.out.println(String.join("", Collections.nCopies(n, s)));
 	}
@@ -26,7 +28,7 @@ public class Printer {
 		System.out.println(String.valueOf(s));
 	}
 	
-	//Draw a record to a arow
+	//Draw a record to a row
 	public static void drawRow(String[] header, int[] colsWidth) {
 		String headerString = "";
 		for (int i=0; i < header.length; i++) {
@@ -46,27 +48,55 @@ public class Printer {
 	}
 	
 	// Draw table when get data from a table
-	public static void drawTable(ResultSet rs, String[] header, int[] colsWidth, int tblWidth) {
+	public void drawTable(ResultSet rs, String[] header, int[] colsWidth, int tblWidth) {
 		// Draw header
-		line("*", tblWidth+1);
-		drawRow(header, colsWidth);
-		line("*", tblWidth+1);
+		clearScreen();
+		Printer.line("*", tblWidth+1);
+		Printer.drawRow(header, colsWidth);
+		Printer.line("*", tblWidth+1);
 		// draw body
+		
 		try {
+			
+			rs.beforeFirst();
+			
 			while(rs.next()) {
-				String[] arr = new String[header.length];
-				for (int i=0; i < header.length; i++) {
-					arr[i] = rs.getString(header[i]);
+				int currentRow = rs.getRow();
+				if(currentRow > this.beginRow && currentRow <= this.endRow) {
+					String[] arr = new String[header.length];
+					for (int i=0; i < header.length; i++) {
+						arr[i] = rs.getString(header[i]);
+					}
+					if(!rs.isFirst()) {
+						Printer.line("-", tblWidth+1);
+					}
+					Printer.drawRow(arr, colsWidth);
 				}
-				if(!rs.isFirst()) {
-					line("-", tblWidth+1);
-				}
-				drawRow(arr, colsWidth);
 			}
 			line("-", tblWidth+1);
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
+	// Draw navigator
+	public void drawNavigation(int numPage, int currentPage) {
+		String nav = "Page: ";
+		for(int i = 1; i <=numPage; i++) {
+			if(i == currentPage) {
+				nav +="["+ i +"] ";
+			}else {
+				nav += i +" ";
+			}
+			
+		}
+		textln(nav);
+	}
+	
+	// clear screen console
+	public static void clearScreen() {  
+		for (int i = 0; i < 5; ++i) System.out.println();
+	}  
 }
