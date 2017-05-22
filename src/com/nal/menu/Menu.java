@@ -1,9 +1,13 @@
 package com.nal.menu;
 
 import java.util.Scanner;
-
+import com.nal.entity.Employee;
 public class Menu {
-
+	
+	Employee employee = null;
+	public Menu() {
+		this.employee = new Employee();
+	}
     public void start() {    
     	Scanner keyboard = new Scanner(System.in);
     	int choice = 0;
@@ -45,17 +49,22 @@ public class Menu {
 
     private void choice1() {
         System.out.println("Danh sách nhân viên");
+        this.employee.listEmployees();
     }
 
     private void choice2() {
         System.out.println("Thêm mới nhân viên");
+        Employee employee = new Employee();
+        employee.addEmployee();
     }
 
     private void choice3() {
         System.out.println("Sửa thông tin nhân viên");
+        this.employee.editEmployee();
     }
     private void choice4() {
         System.out.println("Xóa nhân viên");
+        this.employee.deleteEmployee();
     }
     private void choice5() {
         System.out.println("Thoát chương trình.");

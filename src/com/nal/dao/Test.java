@@ -15,6 +15,7 @@ public class Test {
 	public static void main(String[] args) {
 		MySQLDao db = new MySQLDao();
 		db.connection();
+		//INSERT INTO employee(name, birthday, gender, address, phone, email) VALUES('testtest','2012-10-12',1,'errerew','3343423','dgggg')
 		//db.buildQuery("INSERT INTO test(name, age) VALUES('Nguyen Van A', 20)");
 		//db.insert();
 		//db.buildQuery("DELETE FROM test WHERE id=2");
